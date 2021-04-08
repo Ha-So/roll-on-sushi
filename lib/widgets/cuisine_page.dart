@@ -3,6 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+
+class CuisineType {
+  final int id;
+  final String name;
+
+  CuisineType({
+    this.id,
+    this.name,
+  });
+}
 
 class CuisinePage extends StatefulWidget {
   final String title;
@@ -15,173 +26,152 @@ class CuisinePage extends StatefulWidget {
 
 class _CuisinePageState extends State<CuisinePage> {
 
-  List<String> reportList = [
-    'American',
-    'Cajun',
-    'Chinese',
-    'Greek',
-    'Indian',
-    'Italian',
-    'Japanese',
-    'Korean',
-    'Mediterranean',
-    'Mexican',
-    'Thai'
-  ];
-
-  List<String> selectedReportList = List();
-
-  _showReportDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          //Here we will build the content of the dialog
-          return AlertDialog(
-            title: Text("Any preference?"),
-            content: MultiSelectChip(
-              reportList,
-              onSelectionChanged: (selectedList) {
-                setState(() {
-                  selectedReportList = selectedList;
-                });
-              },
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("SAVE"),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        });
-
-    print(selectedReportList);
-  }
-  // Whether the green box should be visible.
-
+  Color titleColor = Color(0xff4B4849); // Color(0xff393D3D);
   Color backColor = Color(0xffEAE1DF); //Color(0xffA4A5A6);
-  Color titleColor = Color(0xff176AA6); //Color(0xff393D3D);
-  Color buttonColor = Color(0xff7BA3A8);
-  Color textBrownColor = Color(0xff4B4849);
+  Color buttonColor = Color(0xff176AA6);
 
-  var cuisineNames = {
-    'American': false,
-    'Cajun': false,
-    'Chinese': false,
-    'Greek': false,
-    'Indian': false,
-    'Italian': false,
-    'Japanese': false,
-    'Korean': false,
-    'Mediterranean': false,
-    'Mexican': false,
-    'Thai': false
-  };
 
-  void onChangedName(String name, bool val) {
-    cuisineNames[name] = val;
-    print(cuisineNames);
+  static List<CuisineType> _cuisinetypes = [
+    CuisineType(id: 1, name: "American"),
+    CuisineType(id: 2, name: "Cajun"),
+    CuisineType(id: 3, name: "Chinese"),
+    CuisineType(id: 4, name: "Greek"),
+    CuisineType(id: 5, name: "Indian"),
+    CuisineType(id: 6, name: "Italian"),
+    CuisineType(id: 7, name: "Japanese"),
+    CuisineType(id: 8, name: "Korean"),
+    CuisineType(id: 9, name: "Thai"),
+    CuisineType(id: 10, name: "Mexican"),
+    CuisineType(id: 11, name: "Mediterranean")
+  ];
+  final _items = _cuisinetypes
+      .map((cuisinetype) => MultiSelectItem<CuisineType>(cuisinetype, cuisinetype.name))
+      .toList();
+  List<CuisineType> _selectedCuisines5 = [];
+  final _multiSelectKey = GlobalKey<FormFieldState>();
+
+  @override
+  void initState() {
+    _selectedCuisines5 = _cuisinetypes;
+    super.initState();
   }
 
-
-
-  //List<int> cuisineChoices = List.filled(11, 0);
-
-  bool _isChecked = false;
-  bool _isCheckedAmerican = false;
-  bool _isCheckedCajun = false;
-  bool _isCheckedAsian = false;
-  bool _isCheckedChinese = false;
-  bool _isCheckedGreek = false;
-  bool _isCheckedIndian = false;
-  bool _isCheckedItalian = false;
-  bool _isCheckedJapanese = false;
-  bool _isCheckedKorean = false;
-  bool _isCheckedMediterranean = false;
-  bool _isCheckedMexican = false;
-  bool _isCheckedThai = false;
 
   @override
   Widget build(BuildContext context) {
-    // The green box goes here with some other Widgets.
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title:   Text(
-            "Just a few taps...",
-            textAlign: TextAlign.end,
-            style: TextStyle(
-              fontSize: 15.0,
-              fontFamily: "varela",
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          backgroundColor: Colors.black87,
-        ),
         backgroundColor: backColor,
-        body: ListView(
-          padding: const EdgeInsets.all(0),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Center(
-                child: FloatingActionButton.extended(
-                  backgroundColor: buttonColor,
-                  //shape: CircleBorder(),
-                  label: Text("Cuisine Preference"),
-                  onPressed: () => _showReportDialog(),
+        appBar: AppBar(
+          title:  Text(
+          "Roll/On/Sushi",
+          textAlign: TextAlign.end,
+        style: TextStyle(
+        fontSize: 20.0,
+        fontFamily: "varela",
+        fontStyle: FontStyle.normal,
+    ),),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.settings),
+              tooltip: 'Setting Icon',
+              onPressed: () {},
+            ), //IconButton
+          ], //<Widget>[]
+          backgroundColor: Colors.black87,
+          elevation: 50.0,
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Menu Icon',
+            onPressed: () {},
+          ), //IconButton
+          brightness: Brightness.dark,
+        ), //AppBar
+
+      body: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(20),
+          child: Column(
+
+            children: <Widget>[
+              SizedBox(height: 40),
+              //################################################################################################
+              // MultiSelectChipField
+              //################################################################################################
+              MultiSelectChipField(
+                //chipWidth: 50,
+                items: _items,
+                initialValue: [_cuisinetypes[4], _cuisinetypes[7], _cuisinetypes[9]],
+                title: Text("Cuisines"  ,  style: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "",
+                    fontStyle: FontStyle.italic,
+                    color: titleColor),), icon: const Icon(Icons.check),
+                headerColor: Colors.black87.withOpacity(0.0),
+                chipColor: buttonColor,
+                textStyle: (TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: "varela",
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white
+                )),
+                decoration: BoxDecoration(
+
+                 //border: Border.all(color: Colors.blue[700], width: 1.8),
                 ),
+                selectedChipColor: buttonColor.withOpacity(0.5),
+                selectedTextStyle: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "Varela",
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white
+                ),
+                onTap: (values) {
+                  _selectedCuisines5 = values;
+                },
               ),
-            ),
-          ],
+             SizedBox(height: 40),
+
+              //################################################################################################
+              // MultiSelectChipField 2
+              //################################################################################################
+              MultiSelectChipField(
+                //chipWidth: 50,
+                items: _items,
+                initialValue: [_cuisinetypes[4], _cuisinetypes[7], _cuisinetypes[9]],
+                title: Text("Distance"), icon: const Icon(Icons.check),
+                headerColor: Colors.black87.withOpacity(0.0),
+                chipColor: buttonColor,
+                textStyle: (TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "varela",
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white
+                )),
+                decoration: BoxDecoration(
+
+                  //border: Border.all(color: Colors.blue[700], width: 1.8),
+                ),
+                selectedChipColor: buttonColor.withOpacity(0.5),
+                selectedTextStyle: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: "varela",
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white
+                ),
+                onTap: (values) {
+                  _selectedCuisines5 = values;
+                },
+              ),
+
+            ],
+          ),
         ),
       ),
-    );
+
+    ),
+    ) ;
   }
 }
-class MultiSelectChip extends StatefulWidget {
-  final List<String> reportList;
-  final Function(List<String>) onSelectionChanged;
 
-  MultiSelectChip(this.reportList, {this.onSelectionChanged});
-
-  @override
-  _MultiSelectChipState createState() => _MultiSelectChipState();
-}
-
-class _MultiSelectChipState extends State<MultiSelectChip> {
-  // String selectedChoice = "";
-  List<String> selectedChoices = List();
-
-  _buildChoiceList() {
-    List<Widget> choices = List();
-
-    widget.reportList.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(2.0),
-        child: ChoiceChip(
-          label: Text(item),
-          selected: selectedChoices.contains(item),
-          onSelected: (selected) {
-            setState(() {
-              selectedChoices.contains(item)
-                  ? selectedChoices.remove(item)
-                  : selectedChoices.add(item);
-              widget.onSelectionChanged(selectedChoices);
-            });
-          },
-        ),
-      ));
-    });
-
-    return choices;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: _buildChoiceList(),
-    );
-  }
-}
