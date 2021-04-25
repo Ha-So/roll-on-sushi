@@ -6,7 +6,7 @@ import 'about_page.dart';
 
 class LandingPage extends StatelessWidget {
   @override
-  Color backColor =  Color(0xffEAE1DF);//Color(0xffA4A5A6);
+  Color backColor =  Colors.white;//Color(0xffEAE1DF);//Color(0xffA4A5A6);
   Color titleColor =  Color(0xff176AA6);//Color(0xff393D3D);
   Color buttonColor =  Color(0xff176AA6);
   Color textBrownColor =Color(0xff4B4849);
@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[ Padding(
               padding: EdgeInsets.only(bottom: 20.0),
-              child: Image.asset('images/newlogo.png')
+              child: Image.asset('images/logotransparent.png')
             ),
               Padding(
                 padding: EdgeInsets.only(bottom: 40.0),

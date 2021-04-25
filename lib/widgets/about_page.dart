@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'cuisine_page.dart';
 
+
 class AboutPage extends StatefulWidget {
   final String title;
 
@@ -15,7 +16,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   Color titleColor = Color(0xff4B4849); // Color(0xff393D3D);
-  Color backColor = Color(0xffEAE1DF); //Color(0xffA4A5A6);
+  Color backColor = Colors.white; //Color(0xffA4A5A6);
   Color buttonColor = Color(0xff176AA6);
 
   Padding _GenerateButtonPadding() {
