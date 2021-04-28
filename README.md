@@ -4,4 +4,4 @@ Ever have trouble deciding where to eat? Roll/On/Sushi will decide for you! Simp
 
 ## Screenshots
 
-![alt text](https://github.com/Ha-So/roll_on_sushi/blob/master/screenshots/rSushi.PNG)
+![alt text](https://github.com/Ha-So/roll_on_sushi/tree/master/images/rSushi.PNG)
