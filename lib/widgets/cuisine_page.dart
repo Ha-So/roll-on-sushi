@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -6,9 +8,7 @@ import 'package:rollonsushi/widgets/results_page.dart';
 import '../main.dart';
 import 'about_page.dart';
 
-
 class CuisinePage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _CuisinePageState();
 }
@@ -17,17 +17,16 @@ class _CuisinePageState extends State<CuisinePage> {
   Color titleColor = Color(0xff4B4849); // Color(0xff393D3D);
   Color backColor = Colors.white; //Color(0xffA4A5A6);
   Color buttonColor = Color(0xff176AA6);
-  Color subColor =  Color(0xff176AA6);//Color(0xff393D3D);
+  Color subColor = Color(0xff176AA6); //Color(0xff393D3D);
 
-  GlobalKey<ScaffoldState> _key;
-  bool _isSelected;
-  List<CompanyWidget> _companies;
-  List<String> _filters;
-  List<String> _choices;
-  List<String> _ratings;
-  int _choiceIndex;
-  int _ratingIndex;
-
+  GlobalKey<ScaffoldState>? _key;
+  bool? _isSelected;
+  late List<CompanyWidget> _companies;
+  List<String>? _filters;
+  late List<String> _choices;
+  late List<String> _ratings;
+  int? _choiceIndex;
+  int? _ratingIndex;
 
   @override
   void initState() {
@@ -47,90 +46,115 @@ class _CuisinePageState extends State<CuisinePage> {
       CompanyWidget('Korean'),
       CompanyWidget('Thai'),
     ];
-    _choices = ["5 Miles","10 Miles",
-      "20 Miles"];
+    _choices = ["5 Miles", "10 Miles", "20 Miles"];
 
     _ratings = ["1 Star", "2 Star", "3 Star", "4 Star", "5 Star"];
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea( child:Scaffold( backgroundColor: backColor,
-      key: _key,
-      appBar: AppBar(
-        shadowColor: Colors.blueAccent,
-        elevation: 40,
-        toolbarHeight: 70,
-        backgroundColor: Color(0xff176AA6),
-        title:
-        Text('ROLL/ON/SUSHI',
-          style: TextStyle(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backColor,
+        key: _key,
+        appBar: AppBar(
+          shadowColor: Colors.blueAccent,
+          elevation: 40,
+          toolbarHeight: 70,
+          backgroundColor: Color(0xff176AA6),
+          title: Text(
+            'ROLL/ON/SUSHI',
+            style: TextStyle(
               fontSize: 40.0,
               fontFamily: "zeyada",
               fontWeight: FontWeight.bold,
               color: Colors.white,
-          ),),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.done_outline_rounded,
-              color: Colors.white,
             ),
-            onPressed: () {
-              Navigator.push(context, FadeRoute(page: ResultsPage(text: 'Hello',)));
-            },
-          )
-        ],
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(child: Text('Cuisines' , style: TextStyle(
-        fontSize: 20.0,
-            fontFamily: "varela",
-            //fontStyle: FontStyle.italic,
-            color: subColor),),padding: const EdgeInsets.only(top: 15.0)),
-           // chipList(),
-           // _buildActionChips(),
-            //_buildInputChips(),
-            Wrap(
-              children: companyPosition.toList(),
-            ),
-            Container(child: Text('Distance', style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "varela",
-                //fontStyle: FontStyle.italic,
-                color: subColor),),padding: const EdgeInsets.only(top: 15.0)),
-            _buildChoiceChips(),
-            Container(child: Text('Rating', style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: "varela",
-                //fontStyle: FontStyle.italic,
-                color: subColor),),padding: const EdgeInsets.only(top: 15.0)),
-           _buildChoiceChipsRating()
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.done_outline_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ResultsPage(
+                      fChoice: _choiceIndex,
+                      rChoice: _ratingIndex,
+                      eChoices: _filters,
+                    ),
+                  ),
+                );
+                //FadeRoute(page: ResultsPage(text: 'Hello',)));
+              },
+            )
           ],
+          centerTitle: false,
+          automaticallyImplyLeading: false,
         ),
-
-
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  child: Text(
+                    'Cuisines',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: "varela",
+                        //fontStyle: FontStyle.italic,
+                        color: subColor),
+                  ),
+                  padding: const EdgeInsets.only(top: 15.0)),
+              // chipList(),
+              // _buildActionChips(),
+              //_buildInputChips(),
+              Wrap(
+                children: companyPosition.toList(),
+              ),
+              Container(
+                  child: Text(
+                    'Distance',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: "varela",
+                        //fontStyle: FontStyle.italic,
+                        color: subColor),
+                  ),
+                  padding: const EdgeInsets.only(top: 15.0)),
+              _buildChoiceChips(),
+              Container(
+                  child: Text(
+                    'Rating',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: "varela",
+                        //fontStyle: FontStyle.italic,
+                        color: subColor),
+                  ),
+                  padding: const EdgeInsets.only(top: 15.0)),
+              _buildChoiceChipsRating()
+            ],
+          ),
+        ),
       ),
-    ),);
+    );
   }
 
   Widget _buildChoiceChips() {
     return Container(
-      height: MediaQuery.of(context).size.height/5,
+      height: MediaQuery.of(context).size.height / 5,
       child: ListView.builder(
         itemCount: _choices.length,
         itemBuilder: (BuildContext context, int index) {
           return ChoiceChip(
             label: Text(_choices[index]),
             selected: _choiceIndex == index,
-            selectedColor:  Colors.green,
+            selectedColor: Colors.green,
             onSelected: (bool selected) {
               setState(() {
                 _choiceIndex = selected ? index : 0;
@@ -144,170 +168,103 @@ class _CuisinePageState extends State<CuisinePage> {
     );
   }
 
-  Padding _starContainer(int intVal){
+  Padding _starContainer(int intVal) {
     List<String> _stringOptions = ["1", "2", "3", "4", "5"];
     String _strChoice = _stringOptions[intVal];
-    if (intVal == 0){
+    if (intVal == 0) {
       return Padding(
-          padding: EdgeInsets.only(
-              top: 1),
+          padding: EdgeInsets.only(top: 1),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Text(_strChoice),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                )
-              ]
-
-
-
-          )
-      );
-
-    }
-    else if (intVal == 1){
+                Icon(Icons.star_border, color: Colors.white)
+              ]));
+    } else if (intVal == 1) {
       return Padding(
-          padding: EdgeInsets.only(
-              top: 1),
+          padding: EdgeInsets.only(top: 1),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Text(_strChoice),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-              ]
-
-
-
-          )
-      );
-
-    }
-    else if (intVal == 2){
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+              ]));
+    } else if (intVal == 2) {
       return Padding(
-          padding: EdgeInsets.only(
-              top: 1),
+          padding: EdgeInsets.only(top: 1),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Text(_strChoice),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-              ]
-
-
-
-          )
-      );
-
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+              ]));
     }
-    if (intVal == 3){
+    else if (intVal == 3) {
       return Padding(
-          padding: EdgeInsets.only(
-              top: 1),
+          padding: EdgeInsets.only(top: 1),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Text(_strChoice),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-              ]
-
-
-
-          )
-      );
-
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+              ]));
     }
-    if (intVal == 4){
+    else if (intVal == 4) {
       return Padding(
-          padding: EdgeInsets.only(
-              top: 1),
+          padding: EdgeInsets.only(top: 1),
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Text(_strChoice),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-                Icon(
-                    Icons.star_border,
-                    color: Colors.white
-                ),
-              ]
-
-
-
-          )
-      );
-
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+              ]));
     }
+    else{
+      return Padding(
+          padding: EdgeInsets.only(top: 1),
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Text(_strChoice),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+                Icon(Icons.star_border, color: Colors.white),
+              ]));
+    }
+
   }
-
 
   Widget _buildChoiceChipsRating() {
     return Container(
-      height: MediaQuery.of(context).size.height/4,
+      height: MediaQuery.of(context).size.height / 4,
       child: ListView.builder(
         itemCount: _ratings.length,
         itemBuilder: (BuildContext context, int index) {
-          return ChoiceChip(padding: const EdgeInsets.all(6.0),
-            label: Container(
-            width: 120,
-            height: 20,
-            child: _starContainer(index)) ,//_ratings[index],
+          return ChoiceChip(
+            padding: const EdgeInsets.all(6.0),
+            label:
+                Container(width: 120, height: 20, child: _starContainer(index)),
+            //_ratings[index],
             selected: _ratingIndex == index,
-            selectedColor:  Colors.green,
+            selectedColor: Colors.green,
             onSelected: (bool selected) {
               setState(() {
                 _ratingIndex = selected ? index : 0;
@@ -321,8 +278,6 @@ class _CuisinePageState extends State<CuisinePage> {
     );
   }
 
-
-
   Iterable<Widget> get companyPosition sync* {
     for (CompanyWidget company in _companies) {
       yield Padding(
@@ -331,17 +286,20 @@ class _CuisinePageState extends State<CuisinePage> {
           backgroundColor: Color(0xff176AA6),
           avatar: CircleAvatar(
             backgroundColor: Colors.cyan,
-            child: Text(company.name[0].toUpperCase(),style: TextStyle(color: Colors.white),),
+            child: Text(
+              company.name[0].toUpperCase(),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-          label: Text(company.name, style: TextStyle(color:
-          Colors.white)),
-          selected: _filters.contains(company.name),selectedColor: Colors.green,
+          label: Text(company.name, style: TextStyle(color: Colors.white)),
+          selected: _filters!.contains(company.name),
+          selectedColor: Colors.green,
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
-                _filters.add(company.name);
+                _filters!.add(company.name);
               } else {
-                _filters.removeWhere((String name) {
+                _filters!.removeWhere((String name) {
                   return name == company.name;
                 });
               }
@@ -411,7 +369,7 @@ class _CuisinePageState extends State<CuisinePage> {
     );
   }*/
 
- /* Widget _buildActionChips() {
+/* Widget _buildActionChips() {
     return ActionChip(
       elevation: 8.0,
       padding: EdgeInsets.all(2.0),
@@ -438,5 +396,6 @@ class _CuisinePageState extends State<CuisinePage> {
 
 class CompanyWidget {
   const CompanyWidget(this.name);
+
   final String name;
 }

@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'cuisine_page.dart';
 
-
 class AboutPage extends StatefulWidget {
-  final String title;
+  final String? title;
 
-  AboutPage({Key key, this.title}) : super(key: key);
+  AboutPage({Key? key, this.title}) : super(key: key);
 
   @override
   _AboutPageState createState() => _AboutPageState();
@@ -47,13 +46,14 @@ class _AboutPageState extends State<AboutPage> {
 
   Padding _GenerateTextContainer(String val) {
     return Padding(
-      padding: const EdgeInsets.only(right:8, left:8),
+      padding: const EdgeInsets.only(right: 8, left: 8),
       child: Container(
         color: backColor,
         height: MediaQuery.of(context).size.height * 1,
         child: Center(
           child: Text(
-            val, textAlign: TextAlign.center,
+            val,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: titleColor, fontSize: 20.0, fontFamily: "varela"),
           ),
